@@ -47,8 +47,7 @@ cover_file="cover_text.txt"
 steg_file="steg_text.txt"
 
 encode(secret_file,cover_file,steg_file)
+
+#secret msg can vary in language
 # secret_message = "attack at 3pm"
 # secret_message="3 بجے حملہ"
-# cover_text = "The average temperature in Islamabad today is 31 with the highest temperature hitting at 3pm with 38 Celsius while the lowest hitting 21 Celsius at 4am. "
-# stego_txt = encode(secret_message, cover_text)
-# print("Steganograph Text:", stego_txt)
