@@ -35,22 +35,24 @@ def non_linear_transposition(text, dynamic_key):
         transposed_text += text[transposed_char_index]
     return transposed_text
 
-def chaotic_mixing(text):
+def mixing(text, seed):
     """
-    Performs chaotic mixing by randomly shuffling characters in the text.
+    Performs mixing by shuffling characters in the text based on a seed.
     """
+    random.seed(seed)  # Set the random seed for reproducibility
     mixed_text = list(text)
     random.shuffle(mixed_text)
     return ''.join(mixed_text)
 
 def encrypt_text(secret_txt, dynamic_key):
     """
-    Encrypts the secret text using polyalphabetic substitution, non-linear transposition, and chaotic mixing.
+    Encrypts the secret text using polyalphabetic substitution, non-linear transposition, and deterministic mixing.
     """
     substituted_text = polyalphabetic_substitution(secret_txt, dynamic_key)
     transposed_text = non_linear_transposition(substituted_text, dynamic_key)
-    encrypted_text = chaotic_mixing(transposed_text)
+    encrypted_text = mixing(transposed_text, dynamic_key)
     return encrypted_text
+
 
 def encode(secret_path, cover_path, steg_path):
     """
