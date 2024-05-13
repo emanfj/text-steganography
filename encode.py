@@ -118,9 +118,9 @@ def encode(secret_path, cover_path, steg_path):
     print("Dynamic key saved to:", key_file_path)
 
 # File paths
-secret_file_path = "text-steganography/secret_text.txt"
-cover_file_path = "text-steganography/cover_text.txt"
-steg_file_path = "text-steganography/steg_text.txt"
+secret_file_path = "secret_text_urdu.txt"
+cover_file_path = "cover_text_2.txt"
+steg_file_path = "steg_text.txt"
 
 # Encoding
 encode(secret_file_path, cover_file_path, steg_file_path)
