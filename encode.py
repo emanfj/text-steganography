@@ -155,43 +155,10 @@
 #     print("Steganography successful. Stego text saved to:", steg_path)
 #     print("Dynamic key saved to:", key_file_path)
 
-# # File paths
-# secret_file_path = "secret_text.txt"
-# cover_file_path = "cover_text.txt"
-# steg_file_path ="steg_text.txt"
+# File paths
+secret_file_path = "text-steganography/secret_text.txt"
+cover_file_path = "text-steganography/cover_text.txt"
+steg_file_path = "text-steganography/steg_text.txt"
 
-# # Encoding
-# encode(secret_file_path, cover_file_path, steg_file_path)
-
-def transposition_cipher(text, key):
-    key_length = len(key)
-    # Create a dictionary to store the character positions based on the key
-    positions = {k: i for i, k in enumerate(sorted(key))}
-    # Arrange the characters of the text based on their positions in the key
-    sorted_text = [text[i] for i in sorted(range(len(text)), key=lambda x: positions[key[x % key_length]])]
-    # Join the sorted characters to form the ciphered text
-    return ''.join(sorted_text)
-
-def reverse_transposition_cipher(cipher_text, key):
-    key_length = len(key)
-    # Create a dictionary to store the character positions based on the key
-    positions = {k: i for i, k in enumerate(sorted(key))}
-    # Create a list to store the positions of characters in the original order
-    original_positions = [None] * len(key)
-    for i, k in enumerate(key):
-        original_positions[positions[k]] = i
-    # Arrange the characters of the ciphered text based on their original positions
-    sorted_text = [None] * len(cipher_text)
-    for i, char in enumerate(cipher_text):
-        sorted_text[original_positions[i % key_length]] = char
-    # Join the sorted characters to form the original text
-    return ''.join(sorted_text)
-
-text = "lzqcfh!d~(0yd"
-dynamic_key = "de525315a83994b5fa8f4c9ced8145f8"
-
-ciphered_text = transposition_cipher(text, dynamic_key)
-print("Ciphered Text:", ciphered_text)
-
-original_text = reverse_transposition_cipher(ciphered_text, dynamic_key)
-print("Original Text:", original_text)
+# Encoding
+encode(secret_file_path, cover_file_path, steg_file_path)
