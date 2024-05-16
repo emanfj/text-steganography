@@ -15,9 +15,9 @@ def reverse_polyalphabetic_substitution(text, dynamic_key):
     print("Text after reverse polyalphabetic substitution:", original_text)
     return original_text
 
-def reverse_non_linear_transposition(text):
+def reverse_transposition(text):
     """
-    Reverses the non-linear transposition on the given text.
+    Reverses the  transposition on the given text.
     """
     reversed_text = ""
     mid = len(text) // 2
@@ -37,7 +37,7 @@ def decrypt_text(encrypted_text, dynamic_key):
     Decrypts the encrypted text to retrieve the original secret text.
     """
     # Reverse the non-linear transposition
-    reversed_transposition = reverse_non_linear_transposition(encrypted_text)
+    reversed_transposition = reverse_transposition(encrypted_text)
     # Reverse the polyalphabetic substitution
     original_text = reverse_polyalphabetic_substitution(reversed_transposition, dynamic_key)
     return original_text

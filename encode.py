@@ -63,9 +63,9 @@ def polyalphabetic_substitution(text, dynamic_key):
     return substituted_text
 
 
-def non_linear_transposition(text):
+def transposition(text):
     """
-    Performs non-linear transposition on the given text.
+    Performs transposition on the given text.
 
     Args:
         text (str): The text to be transposed.
@@ -80,7 +80,7 @@ def non_linear_transposition(text):
     for i in range(1, len(text), 2):
         transposed_text += text[i]
         
-    print("After non linear transposition:", transposed_text)
+    print("After transposition:", transposed_text)
     return transposed_text
 
 
@@ -97,7 +97,7 @@ def encrypt_text(secret_txt, dynamic_key):
     """
     # Encrypt the secret text
     substituted_text = polyalphabetic_substitution(secret_txt, dynamic_key)
-    encrypted_text = non_linear_transposition(substituted_text)
+    encrypted_text = transposition(substituted_text)
     print("Encrypted text:", encrypted_text)
     return encrypted_text
 
