@@ -135,7 +135,6 @@ def encode(secret_path, cover_path, steg_path, key_path):
     with open(steg_path, 'w', encoding='utf-8') as steg_file:
         steg_file.write(stego_txt)
     print("Steganography successful. Stego text saved to:", steg_path)
-    print("Dynamic key saved to:", key_file_path)
 
 # File paths
 secret_file_path = "secret_text.txt"

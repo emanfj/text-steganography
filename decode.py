@@ -2,6 +2,34 @@ import os
 import mimetypes
 import json
 
+def get_dynamic_key(key_path):
+    """
+    Gets key saved in JSON
+    """
+    # Validate inputs
+    if not os.path.exists(key_path):
+        raise FileNotFoundError("Key json file does not exist.")
+    
+    if not mimetypes.guess_type(key_path)[0] == 'application/json':
+        raise ValueError("Key files must be json files.")
+    
+    # Read the key from json file
+    with open(key_path, 'r') as key_file:
+        data = json.load(key_file)
+
+    if not data:
+        raise ValueError("Key json is empty.")
+    
+    if not data["dynamic_key"]:
+        raise ValueError("Key is not provided in JSON.")
+    
+    dynamic_key = data['dynamic_key']
+    if not dynamic_key:
+        raise ValueError("Key provided is empty.")
+    
+    return dynamic_key
+
+
 def reverse_polyalphabetic_substitution(text, dynamic_key):
     """
     Reverses the polyalphabetic substitution on the given text using the dynamic key.
@@ -61,8 +89,6 @@ def decode(steg_path, key_path):
     # Ensure input files are text files
     if not mimetypes.guess_type(steg_path)[0] == 'text/plain':
         raise ValueError("Steg file must be text files.")
-    if not mimetypes.guess_type(key_path)[0] == 'application/json':
-        raise ValueError("Key files must be json files.")
     
     # Read the secret text from file
     with open(steg_path, 'r', encoding='utf-8') as steg_file:
@@ -70,20 +96,8 @@ def decode(steg_path, key_path):
 
     if not steg_txt:
         raise ValueError("Steg text is empty.")
-
-    # Read the key from json file
-    with open(key_path, 'r') as key_file:
-        data = json.load(key_file)
-
-    if not data:
-        raise ValueError("Key json is empty.")
     
-    if not data["dynamic_key"]:
-        raise ValueError("Key is not provided in JSON.")
-    
-    dynamic_key = data['dynamic_key']
-    if not dynamic_key:
-        raise ValueError("Key provided is empty.")
+    dynamic_key = get_dynamic_key(key_path)
     
     # Extract the encrypted text form the steg_text
     encrypted_binary = ""
@@ -114,4 +128,4 @@ def decode(steg_path, key_path):
 steg_path = "steg_text.txt"
 key_path = "key.json"
 
-print(decode(steg_path, key_path))
+decode(steg_path, key_path)
