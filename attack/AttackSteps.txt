@@ -30,4 +30,10 @@
    > Only these two special chars can be seen being used
       - Binary perhaps
    > Created a short program to read every byte to see patterns
+   > Extracted out the byte for secret text (i considered zwnj as 0 and zwj as 1)
+      - This output was p much garbage
+      - The out put was, however, very far from alphabetical
+         - This implies that a XOR has happened at some point
+   > Wrote a code to try out XOR with many different keys (BRUTE FORCE)
+      - Found that some keys (in range 64 to 127) produce more alphabetical sequences
 
