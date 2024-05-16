@@ -1,0 +1,33 @@
+1) Just going over the peices of text
+   > Spotted a double space in A.txt ("...in the  corner, its chipped...")
+   > Spotted another double space in A.txt ("...heavy in the air,  a bittersweet...")
+   
+   > B.txt also started with a "1" not "2" Maybe it has some meaning
+   > End with a few newlines (or some other special chars)
+   > It also ends with a "1." and few more new lines ("\n") chars
+
+   > C.txt didnt seem to have any annomaly
+
+   > D.txt starts with "1" instead of "4" (strong indecation that this number has some meaning)
+   > It also ends with a few newlines
+
+   > E.txt starts with "1" instead of "5" (this also might just be a formatting error by Eman)
+   > It also had some format written in brackets such as "(italic)" or "(underline)"
+
+2) Further Analysis
+   > I opened each file in Notepad++ where you can make special chars like tabs, spaces and newlines visible
+      - Found that document B, D and E have a lot of very strange chars between each symbol
+      - Conclusion: 
+         - They must be the texts with hidden info
+         - They also all start with a 1... Weird
+
+3) Getting the msg
+   > On the bottom left of both notepad and notepad++ we can see what character-encoding is used
+      - UTF-8 is being used
+   > Using this website https://www.cogsci.ed.ac.uk/~richard/utf-8.cgi?input=%E2%80%8C&mode=char I got the name of the special chars
+      - Zero width non-joiner (zwnj)
+      - Zero width joiner (zwj)
+   > Only these two special chars can be seen being used
+      - Binary perhaps
+   > Created a short program to read every byte to see patterns
+
