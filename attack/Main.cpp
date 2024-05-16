@@ -4,6 +4,7 @@
 #include <bitset>
 #include <deque>
 #include <vector>
+#include <limits>
 
 int main() {
 	const unsigned char special_byte_1 = 0xe2;
