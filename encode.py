@@ -4,9 +4,19 @@ import json
 
 def get_dynamic_key(key_path):
     """
-    Gets key saved in JSON
+    Retrieves the dynamic key stored in a JSON file.
+
+    Args:
+        key_path (str): Path to the JSON file containing the key.
+
+    Returns:
+        str: The dynamic key.
+
+    Raises:
+        FileNotFoundError: If the key JSON file does not exist.
+        ValueError: If the key file is not a JSON file, or if the JSON is empty or does not contain the dynamic key.
     """
-    # Validate inputs
+    # Validate inputs and retrieve dynamic key
     if not os.path.exists(key_path):
         raise FileNotFoundError("Key json file does not exist.")
     
@@ -31,19 +41,39 @@ def get_dynamic_key(key_path):
 
 def polyalphabetic_substitution(text, dynamic_key):
     """
-    Performs polyalphabetic substitution on the given text using the dynamic key.
+    Performs polyalphabetic substitution on the given text using the provided dynamic key.
+
+    Args:
+        text (str): The text to be encrypted.
+        dynamic_key (str): The dynamic key for encryption.
+
+    Returns:
+        str: The substituted text after encryption.
     """
+    # Perform polyalphabetic substitution
     substituted_text = ""
     key_length = len(dynamic_key)
     for i, char in enumerate(text):
-        key_byte = dynamic_key[i % key_length]  # Repeats the key if necessary
-        substituted_char = chr(ord(char) ^ int(key_byte, 16))  # XOR substitution with dynamic key byte
+        # Repeats the key if necessary
+        key_byte = dynamic_key[i % key_length]  
+        # XOR substitution with dynamic key byte
+        substituted_char = chr(ord(char) ^ int(key_byte, 16))  
         substituted_text += substituted_char
     print("After polyalphabetic substitution:", substituted_text)
     return substituted_text
 
 
 def non_linear_transposition(text):
+    """
+    Performs non-linear transposition on the given text.
+
+    Args:
+        text (str): The text to be transposed.
+
+    Returns:
+        str: The transposed text.
+    """
+    # Perform non-linear transposition
     transposed_text = ""
     for i in range(0, len(text), 2):
         transposed_text += text[i]
@@ -51,14 +81,21 @@ def non_linear_transposition(text):
         transposed_text += text[i]
         
     print("After non linear transposition:", transposed_text)
-
     return transposed_text
 
 
 def encrypt_text(secret_txt, dynamic_key):
     """
     Encrypts the secret text using polyalphabetic substitution and non-linear transposition.
+
+    Args:
+        secret_txt (str): The text to be encrypted.
+        dynamic_key (str): The dynamic key for encryption.
+
+    Returns:
+        str: The encrypted text.
     """
+    # Encrypt the secret text
     substituted_text = polyalphabetic_substitution(secret_txt, dynamic_key)
     encrypted_text = non_linear_transposition(substituted_text)
     print("Encrypted text:", encrypted_text)
@@ -66,6 +103,16 @@ def encrypt_text(secret_txt, dynamic_key):
 
 
 def text2binary(text):
+    """
+    Converts text to binary representation.
+
+    Args:
+        text (str): The text to be converted.
+
+    Returns:
+        str: The binary representation of the text.
+    """
+    # Convert text to binary
     binary=''
     for char in text:
         binary += format(ord(char),'08b')#format each character in binary representation
@@ -75,8 +122,18 @@ def text2binary(text):
 def encode(secret_path, cover_path, steg_path, key_path):
     """
     Encodes the secret text into the cover text using text steganography.
+
+    Args:
+        secret_path (str): Path to the secret text file.
+        cover_path (str): Path to the cover text file.
+        steg_path (str): Path to save the stego text file.
+        key_path (str): Path to the JSON file containing the dynamic key.
+
+    Raises:
+        FileNotFoundError: If the secret or cover file does not exist.
+        ValueError: If the input files are not text files or if the secret text is empty.
     """
-    # Validate inputs
+    # Validate inputs and encode the secret text into cover text using steganography
     if not all(map(os.path.exists, [secret_path, cover_path])):
         raise FileNotFoundError("Secret or cover file does not exist.")
     

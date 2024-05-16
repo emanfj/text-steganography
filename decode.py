@@ -8,15 +8,17 @@ def reverse_polyalphabetic_substitution(text, dynamic_key):
     """
     original_text = ""
     key_length = len(dynamic_key)
-    for i, char in enumerate(text):
+    for i, encrypted_char in enumerate(text):
         key_byte = dynamic_key[i % key_length]  # Repeats the key if necessary
-        original_char = chr(ord(char) ^ int(key_byte, 16))  # XOR reverse substitution with dynamic key byte
+        original_char = chr(ord(encrypted_char) ^ int(key_byte, 16))  # XOR reverse substitution with dynamic key byte
         original_text += original_char
-    # print("Original text after reverse polyalphabetic substitution:", original_text)
+    print("Text after reverse polyalphabetic substitution:", original_text)
     return original_text
 
-
 def reverse_non_linear_transposition(text):
+    """
+    Reverses the non-linear transposition on the given text.
+    """
     reversed_text = ""
     mid = len(text) // 2
     for i in range(mid):
@@ -27,9 +29,8 @@ def reverse_non_linear_transposition(text):
             reversed_text += text[mid + i + 1]
     if len(text) % 2 != 0:
         reversed_text += text[mid]
-
+    print("Text after reverse transposition", reversed_text)
     return reversed_text
-
 
 def decrypt_text(encrypted_text, dynamic_key):
     """
@@ -37,22 +38,20 @@ def decrypt_text(encrypted_text, dynamic_key):
     """
     # Reverse the non-linear transposition
     reversed_transposition = reverse_non_linear_transposition(encrypted_text)
-    print("reverse_non_linear_transposition", reversed_transposition)
     # Reverse the polyalphabetic substitution
     original_text = reverse_polyalphabetic_substitution(reversed_transposition, dynamic_key)
-    print("reverse_polyalphabetic_substitution", original_text)
-    print("Original secret text:", original_text)
     return original_text
 
-
-def binary2text(binary):
+def binary_to_text(binary):
+    """
+    Converts binary string to text.
+    """
     n = int(binary, 2)
     return n.to_bytes((n.bit_length() + 7) // 8, 'big').decode()
 
-
 def decode(steg_path, key_path):
     """
-    decodes the secret text from the stegnograph.
+    Decodes the secret text from the steganograph.
     """
     # Validate inputs
     if not all(map(os.path.exists, [steg_path, key_path])):
@@ -66,52 +65,58 @@ def decode(steg_path, key_path):
     
     # Read the secret text from file
     with open(steg_path, 'r', encoding='utf-8') as steg_file:
-        steg_txt = steg_file.read()
+        steg_text = steg_file.read()
 
-    if not steg_txt:
+    if not steg_text:
         raise ValueError("Steg text is empty.")
 
     # Read the key from json file
     with open(key_path, 'r') as key_file:
-        data = json.load(key_file)
+        key_data = json.load(key_file)
 
-    if not data:
+    if not key_data:
         raise ValueError("Key json is empty.")
     
-    if not data["dynamic_key"]:
+    if not key_data["dynamic_key"]:
         raise ValueError("Key is not provided in JSON.")
     
-    dynamic_key = data['dynamic_key']
+    dynamic_key = key_data['dynamic_key']
     if not dynamic_key:
         raise ValueError("Key provided is empty.")
     
-    # Extract the encrypted text form the steg_text
+    # Extract the encrypted text from the steg_text
     encrypted_binary = ""
 
+    # Characters for encoding binary data in the steg text
     ZERO_WIDTH_JOINER = '\u200d'
     ZERO_WIDTH_NON_JOINER = '\u200c'
 
-    for i, char in enumerate(steg_txt):
-        cur_bit = len(encrypted_binary)
+    # Extract binary data from steg text
+    for i, char in enumerate(steg_text):
+        current_bit_length = len(encrypted_binary)
         
-        add_one =  char == ZERO_WIDTH_JOINER and cur_bit % 2 == 0 \
-                or char == ZERO_WIDTH_NON_JOINER and cur_bit % 2 == 1
+        add_one =  char == ZERO_WIDTH_JOINER and current_bit_length % 2 == 0 \
+                or char == ZERO_WIDTH_NON_JOINER and current_bit_length % 2 == 1
         
-        add_zero = char == ZERO_WIDTH_JOINER and cur_bit % 2 == 1 \
-                or char == ZERO_WIDTH_NON_JOINER and cur_bit % 2 == 0
+        add_zero = char == ZERO_WIDTH_JOINER and current_bit_length % 2 == 1 \
+                or char == ZERO_WIDTH_NON_JOINER and current_bit_length % 2 == 0
         
         if add_one:
             encrypted_binary += "1"
         if add_zero:
             encrypted_binary += "0"
 
-    encrypted_txt = binary2text(encrypted_binary)
+    # Convert binary data to text
+    encrypted_text = binary_to_text(encrypted_binary)
 
-    plain_txt = decrypt_text(encrypted_txt, dynamic_key)
+    # Decrypt the encrypted text
+    plaintext = decrypt_text(encrypted_text, dynamic_key)
 
-    return plain_txt
+    return plaintext
 
+# Paths for steg text and key
 steg_path = "steg_text.txt"
 key_path = "key.json"
 
-print(decode(steg_path, key_path))
+# Decode and print the secret text
+decode(steg_path, key_path)
